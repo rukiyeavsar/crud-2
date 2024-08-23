@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kleapi
+    ports:
+      - "82:82"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - db
+    networks:
+      - kleapi-network
+    environment:
+      - LC_ALL=tr_TR.UTF-8
+      - LANG=tr_TR.UTF-8
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=kleapi-db
+      - DB_USERNAME=laravel_user
+      - DB_PASSWORD=root
+
+  db:
+    image: mysql:latest
+    container_name: kleapi-db  
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: kleapi-db
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: root
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    networks:
+      - kleapi-network  
+
+networks:
+  kleapi-network:
+
+volumes:
+  mysql-data:

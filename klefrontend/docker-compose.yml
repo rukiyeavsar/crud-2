@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kle
+    ports:
+      - "81:81"  # Yeni port numarası
+    volumes:
+      - .:/var/www
+    networks:
+      - kle-network
+    environment:
+      - LC_ALL=tr_TR.UTF-8
+      - LANG=tr_TR.UTF-8
+
+networks:
+  kle-network:
+    driver: bridge
